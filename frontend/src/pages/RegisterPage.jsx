@@ -1,33 +1,32 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const navigate = useNavigate();
 
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("PLAYER");
   const [error, setError] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
     setError("");
 
-    if (!email.trim() || !password.trim()) {
-      setError("Please enter email and password.");
+    if (!fullName.trim() || !email.trim() || !password.trim()) {
+      setError("Please fill all fields.");
       return;
     }
 
-    // TEMPORARY mock login logic (for UI demo)
-    if (role === "ADMIN") navigate("/admin");
-    if (role === "STAFF") navigate("/staff");
-    if (role === "COACH") navigate("/coach");
-    if (role === "PLAYER") navigate("/player");
+    // Mock register success (later: call backend API)
+    // After register, go to login
+    navigate("/login");
   }
 
   return (
     <div style={{ maxWidth: 360 }}>
-      <h2>Login</h2>
+      <h2>Player Registration</h2>
+      <p>Only players can self-register.</p>
 
       {error && (
         <div style={{ marginBottom: 12, padding: 10, border: "1px solid #ccc" }}>
@@ -36,6 +35,16 @@ export default function LoginPage() {
       )}
 
       <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: 10 }}>
+          <label>Full Name</label>
+          <input
+            style={{ width: "100%", padding: 8, marginTop: 4 }}
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder="Tharushi Sanjana"
+          />
+        </div>
+
         <div style={{ marginBottom: 10 }}>
           <label>Email</label>
           <input
@@ -47,38 +56,24 @@ export default function LoginPage() {
           />
         </div>
 
-        <div style={{ marginBottom: 10 }}>
+        <div style={{ marginBottom: 14 }}>
           <label>Password</label>
           <input
             style={{ width: "100%", padding: 8, marginTop: 4 }}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
+            placeholder="Create a password"
           />
         </div>
 
-        <div style={{ marginBottom: 14 }}>
-          <label>Role (demo)</label>
-          <select
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <option value="ADMIN">Admin</option>
-            <option value="STAFF">Staff</option>
-            <option value="COACH">Coach</option>
-            <option value="PLAYER">Player</option>
-          </select>
-        </div>
-
         <button style={{ padding: "8px 12px" }} type="submit">
-          Login
+          Register
         </button>
       </form>
 
       <p style={{ marginTop: 12 }}>
-        New player? <Link to="/register">Register here</Link>
+        Already have an account? <Link to="/login">Login</Link>
       </p>
     </div>
   );
